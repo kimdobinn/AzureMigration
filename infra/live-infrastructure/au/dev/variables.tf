@@ -54,17 +54,7 @@ variable "db_address_space_2" {
 variable "postgresql_version" {
   description = "Version of PostgreSQL to use for the Flexible Server."
   type        = string
-  default     = "15.10"
-}
-variable "admin_username" {
-  description = "Administrator username for the PostgreSQL Flexible Server."
-  type        = string
-  default     = "psqladmin"
-}
-variable "admin_password" {
-  description = "Administrator password for the PostgreSQL Flexible Server."
-  type        = string
-  sensitive   = true
+  default     = "15"
 }
 variable "postgresql_flexible_server_name" {
   description = "Name of the PostgreSQL Flexible Server."
@@ -79,7 +69,7 @@ variable "postgresql_flexible_server_sku_name" {
 variable "postgresql_flexible_server_storage_mb" {
   description = "Storage size in MB for the PostgreSQL Flexible Server."
   type        = number
-  default     = 5120
+  default     = 32768
 }
 variable "postgresql_flexible_server_tags" {
   description = "Tags to apply to the PostgreSQL Flexible Server."
@@ -96,11 +86,6 @@ variable "postgresql_flexible_server_resource_group_name" {
 variable "postgresql_flexible_server_location" {
   description = "Azure region where the PostgreSQL Flexible Server will be deployed."
   type        = string
-}
-variable "postgresql_flexible_server_version" {
-  description = "Version of PostgreSQL to use for the Flexible Server."
-  type        = string
-  default     = "15.10"
 }
 variable "postgresql_flexible_server_admin_username" {
   description = "Administrator username for the PostgreSQL Flexible Server."
