@@ -10,7 +10,7 @@ module "vnet" {
   resource_group_name = var.resource_group_name
 
   # VNet name is constructed automatically from resource_name_prefix
-  
+
   # KIRO EDIT: Removed dns_zone_name to match AWS VPC structure
   # DNS will be handled in the database module where private endpoints are created
 

@@ -97,3 +97,29 @@ variable "postgresql_flexible_server_admin_password" {
   type        = string
   sensitive   = true
 }
+
+
+# COSMOS DB 
+variable "cosmosdb_mongo_throughput" {
+  description = "Request Units per second for Cosmos DB MongoDB database. Equivalent to AWS DocumentDB instance sizing."
+  type        = number
+  default     = 400  # 400 RU/s is roughly equivalent to AWS DocumentDB db.t3.small for development
+}
+
+variable "cosmosdb_backup_retention_hours" {
+  description = "Backup retention period in hours for Cosmos DB. Equivalent to AWS DocumentDB backup retention."
+  type        = number
+  default     = 168  # 7 days (168 hours) - matches typical AWS DocumentDB backup retention
+}
+
+variable "cosmosdb_enable_multi_region" {
+  description = "Enable multi-region deployment for Cosmos DB. Set to true for production HA beyond AWS DocumentDB capabilities."
+  type        = bool
+  default     = false  # Keep false to match single-region AWS DocumentDB setup
+}
+
+variable "cosmosdb_secondary_region" {
+  description = "Secondary region for Cosmos DB multi-region deployment. Only used if cosmosdb_enable_multi_region is true."
+  type        = string
+  default     = "australiasoutheast"  # Closest region to australiaeast for DR
+}
