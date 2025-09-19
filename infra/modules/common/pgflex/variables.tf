@@ -77,7 +77,7 @@ variable "high_availability_mode" {
 variable "standby_availability_zone" {
   description = "Availability zone for the standby server (only used with ZoneRedundant HA mode)."
   type        = string
-  default     = "2"
+  default     = "1"
 }
 
 variable "tags" {
@@ -86,12 +86,9 @@ variable "tags" {
   default     = {}
 }
 
-variable "ingress_cidr_block" {
-  description = "CIDR block allowed to access PostgreSQL server. Equivalent to AWS security group ingress_cidr_blocks."
-  type        = string
-}
+# Note: NSG-related variables removed as network security is now managed by the shared database NSG
 
-variable "subnet_ids" {
-  description = "List of subnet IDs to associate with the NSG. Equivalent to AWS RDS subnet_ids for security group placement."
-  type        = list(string)
+variable "virtual_network_id" {
+  description = "ID of the virtual network for private DNS zone linking. Required for VNet integration."
+  type        = string
 }

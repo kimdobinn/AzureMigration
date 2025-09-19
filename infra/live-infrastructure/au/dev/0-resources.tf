@@ -6,4 +6,25 @@ locals {
   pascal_case_resource_name_prefix       = join("", local.resource_name_prefix_capitalized_parts)
 }
 
-#여기까지는 just au-stg -> au, stg -> AuStg 그냥 string formatting 가지고 노는거임. Nothing technical.
+# Resource group name generation: au-dev -> rg-au-dev
+locals {
+  resource_group_name = "rg-${local.resource_name_prefix}"  # Creates: rg-au-dev, rg-au-prod, etc.
+}
+
+# Create the resource group for this environment
+# This automatically creates rg-au-dev, rg-au-prod, rg-us-dev, etc. based on location_code and environment
+module "resource_group" {
+  source = "../../../modules/common/resource-group"
+
+  resource_group_name = local.resource_group_name
+  location           = var.location
+  location_code      = var.location_code
+  environment        = var.environment
+
+  tags = {
+    Project     = "RespireeAzure"
+    ManagedBy   = "Terraform"
+    Environment = var.environment
+    Region      = var.location_code
+  }
+}

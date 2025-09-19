@@ -1,13 +1,3 @@
-# =============================================================================
-# COSMOS DB MODULE VARIABLES
-# =============================================================================
-# Variables for the Cosmos DB module that replaces AWS DocumentDB
-# Designed to match AWS DocumentDB configuration patterns
-
-# =============================================================================
-# BASIC CONFIGURATION VARIABLES
-# =============================================================================
-
 variable "account_name" {
   description = "Name of the Cosmos DB account. Equivalent to AWS DocumentDB cluster_identifier."
   type        = string
@@ -29,9 +19,7 @@ variable "database_name" {
   default     = "respiree"
 }
 
-# =============================================================================
 # ENGINE AND VERSION CONFIGURATION
-# =============================================================================
 
 variable "mongo_server_version" {
   description = "MongoDB server version for Cosmos DB. AWS DocumentDB 5.0.0 maps to MongoDB 4.2."
@@ -44,9 +32,7 @@ variable "mongo_server_version" {
   }
 }
 
-# =============================================================================
 # CONSISTENCY AND PERFORMANCE CONFIGURATION
-# =============================================================================
 
 variable "consistency_level" {
   description = "Consistency level for Cosmos DB. 'Session' is equivalent to AWS DocumentDB default behavior."
@@ -89,9 +75,7 @@ variable "max_autoscale_throughput" {
   default     = 4000
 }
 
-# =============================================================================
 # HIGH AVAILABILITY CONFIGURATION
-# =============================================================================
 
 variable "enable_zone_redundant" {
   description = "Enable zone redundancy within region. Equivalent to AWS DocumentDB cross-AZ replication."
@@ -111,9 +95,7 @@ variable "secondary_region" {
   default     = "australiasoutheast"  # Closest region to australiaeast
 }
 
-# =============================================================================
 # NETWORK CONFIGURATION
-# =============================================================================
 
 variable "subnet_ids" {
   description = "List of subnet IDs for virtual network integration. Equivalent to AWS DocumentDB subnet_ids."
@@ -132,9 +114,7 @@ variable "enable_public_network_access" {
   default     = false
 }
 
-# =============================================================================
 # BACKUP CONFIGURATION
-# =============================================================================
 
 variable "backup_type" {
   description = "Backup type for Cosmos DB. 'Continuous' is equivalent to AWS DocumentDB automated backups."
@@ -165,9 +145,7 @@ variable "backup_retention_hours" {
   default     = 168  # 7 days (168 hours)
 }
 
-# =============================================================================
 # TAGGING
-# =============================================================================
 
 variable "tags" {
   description = "Tags to apply to Cosmos DB resources. Equivalent to AWS tags."
@@ -175,9 +153,7 @@ variable "tags" {
   default     = {}
 }
 
-# =============================================================================
 # NETWORK SECURITY CONFIGURATION
-# =============================================================================
 
 variable "ingress_cidr_block" {
   description = "CIDR block allowed to access Cosmos DB. Equivalent to AWS security group ingress_cidr_blocks."

@@ -3,8 +3,8 @@ resource "azurerm_cosmosdb_account" "this" {
   resource_group_name = var.resource_group_name
   location            = var.location
   
-  offer_type = "Standard"  # Standard pricing tier (equivalent to AWS on-demand pricing)
-  kind       = "MongoDB"   # MongoDB API - provides DocumentDB compatibility
+  offer_type = "Standard"  # Pricing tier (equivalent to AWS on-demand pricing)
+  kind       = "MongoDB"
   
   mongo_server_version = var.mongo_server_version
 
@@ -41,8 +41,6 @@ resource "azurerm_cosmosdb_account" "this" {
   backup {
     type                = var.backup_type                # Equivalent to AWS automated backups
     tier                = var.backup_tier                # Point-in-time recovery window
-    interval_in_minutes = var.backup_interval_minutes    # Backup frequency
-    retention_in_hours  = var.backup_retention_hours     # Backup retention period
   }
 
   # Security configuration
@@ -111,6 +109,22 @@ resource "azurerm_network_security_rule" "mongodb_ingress" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "27017"                          # MongoDB default port (DocumentDB compatible)
+  source_address_prefix       = var.ingress_cidr_block           # Equivalent to AWS ingress_cidr_blocks
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.this.name
+}
+
+# Security rule for PostgreSQL access from specified CIDR blocks
+# Both CosmosDB and PostgreSQL share the same database subnets
+resource "azurerm_network_security_rule" "postgresql_ingress" {
+  name                        = "Allow-PostgreSQL-Ingress"
+  priority                    = 1002
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5432"                           # PostgreSQL default port
   source_address_prefix       = var.ingress_cidr_block           # Equivalent to AWS ingress_cidr_blocks
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group_name

@@ -19,12 +19,19 @@ resource "azurerm_subnet" "dynamic_private_subnets" {
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [each.value.address_prefix]
 
-  # Private subnets delegate to services like PostgreSQL. Same as AWS RDS subnet groups
-  delegation {
-    name = "postgresql-delegation"
-    service_delegation {
-      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+  # Only database subnets need PostgreSQL delegation (db_main, db_alt)
+  # App subnets should not have delegation as they host application services
+  dynamic "delegation" {
+    for_each = contains(["db_main", "db_alt"], each.value.name) ? [1] : []
+    content {
+      name = "postgresql-delegation"
+      service_delegation {
+        name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+        actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+      }
     }
   }
+
+  # Service endpoints for database subnets to support CosmosDB VNet integration
+  service_endpoints = contains(["db_main", "db_alt"], each.value.name) ? ["Microsoft.AzureCosmosDB"] : []
 }

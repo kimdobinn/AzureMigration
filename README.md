@@ -1,7 +1,7 @@
 # Azure Terraform Infra Setup (from AWS Migration)
 
 ## Summary
-This project replicates a real-world cloud migration I worked on, where an entire AWS backend infrastructure was rebuilt from scratch using Azure Terraform resources.
+Rebuilding AWS backend infrastructure from scratch using Azure Terraform resources.
 
 ## Modules
 - Virtual Network (VNet)

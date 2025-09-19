@@ -58,12 +58,5 @@ output "postgresql_standby_availability_zone" {
   value       = length(azurerm_postgresql_flexible_server.this.high_availability) > 0 ? azurerm_postgresql_flexible_server.this.high_availability[0].standby_availability_zone : null
 }
 
-output "postgresql_nsg_id" {
-  description = "The ID of the Network Security Group for PostgreSQL server."
-  value       = azurerm_network_security_group.this.id
-}
-
-output "postgresql_nsg_name" {
-  description = "The name of the Network Security Group for PostgreSQL server."
-  value       = azurerm_network_security_group.this.name
-}
+# Note: NSG outputs removed as network security is now managed by the shared database NSG
+# Both PostgreSQL and CosmosDB use the same NSG for unified database security management

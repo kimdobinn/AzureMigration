@@ -7,14 +7,8 @@ module "vnet" {
   #Azure address_space = AWS CIDR block
   vnet_address_space = var.vnet_address_space
 
-  resource_group_name = var.resource_group_name
+  resource_group_name = module.resource_group.resource_group_name  # Use dynamic resource group
 
-  # VNet name is constructed automatically from resource_name_prefix
-
-  # KIRO EDIT: Removed dns_zone_name to match AWS VPC structure
-  # DNS will be handled in the database module where private endpoints are created
-
-  #Subnet configurations match AWS structure with availability zone support
   public_subnets = [
     {
       name             = "web"
