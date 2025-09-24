@@ -43,12 +43,12 @@ output "cdn_endpoint_fqdn" {
 # Custom Domain Outputs (equivalent to AWS CloudFront aliases)
 output "custom_domain_name" {
   description = "The custom domain name configured for the CDN. Equivalent to AWS CloudFront aliases."
-  value       = var.custom_domain_name
+  value       = var.cdn_config.custom_domain_name
 }
 
 output "custom_domain_fqdn" {
   description = "The FQDN of the custom domain (if configured)."
-  value       = var.custom_domain_name != null ? "https://${var.custom_domain_name}" : null
+  value       = var.cdn_config.custom_domain_name != null ? "https://${var.cdn_config.custom_domain_name}" : null
 }
 
 # Website URLs for easy access
@@ -57,7 +57,7 @@ output "website_urls" {
   value = {
     storage_endpoint = azurerm_storage_account.this.primary_web_endpoint
     cdn_endpoint     = "https://${azurerm_cdn_endpoint.this.fqdn}"
-    custom_domain    = var.custom_domain_name != null ? "https://${var.custom_domain_name}" : null
+    custom_domain    = var.cdn_config.custom_domain_name != null ? "https://${var.cdn_config.custom_domain_name}" : null
   }
 }
 
@@ -77,4 +77,13 @@ output "deployment_info" {
     cdn_profile_name     = azurerm_cdn_profile.this.name
     resource_group_name  = var.resource_group_name
   }
+}# Backend Compatibility Outputs - equivalent to AWS frontend outputs used by backend
+output "bucket" {
+  description = "Storage account name for backend compatibility. Equivalent to AWS S3 bucket name."
+  value       = azurerm_storage_account.this.name
+}
+
+output "endpoint" {
+  description = "CDN endpoint URL for backend compatibility. Equivalent to AWS CloudFront domain name."
+  value       = "https://${azurerm_cdn_endpoint.this.fqdn}"
 }

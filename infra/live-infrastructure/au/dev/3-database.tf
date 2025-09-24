@@ -1,7 +1,7 @@
 module "postgresql" {
   source                 = "../../../modules/common/pgflex"
   server_name            = "${local.resource_name_prefix}-pgflex"        # Equivalent to AWS cluster_identifier
-  resource_group_name    = module.resource_group.resource_group_name     # Use dynamic resource group
+  resource_group_name    = azurerm_resource_group.this.name              # Use direct resource group
   location               = var.location                                  # Equivalent to AWS region
   postgresql_version     = var.postgresql_version                        # Matches AWS engine_version (15.10)
   administrator_login    = var.postgresql_flexible_server_admin_username # Matches AWS master_user_username
@@ -37,7 +37,7 @@ module "cosmosdb" {
   source = "../../../modules/common/cosmosdb"
 
   account_name        = "${local.resource_name_prefix}-cosmos-docdb"
-  resource_group_name = module.resource_group.resource_group_name    # Use dynamic resource group
+  resource_group_name = azurerm_resource_group.this.name             # Use direct resource group
   location            = var.location
   database_name       = "respiree"
 

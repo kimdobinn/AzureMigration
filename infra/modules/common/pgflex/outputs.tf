@@ -58,5 +58,10 @@ output "postgresql_standby_availability_zone" {
   value       = length(azurerm_postgresql_flexible_server.this.high_availability) > 0 ? azurerm_postgresql_flexible_server.this.high_availability[0].standby_availability_zone : null
 }
 
+output "postgresql_database_name" {
+  description = "The default database name for the PostgreSQL server."
+  value       = "postgres"  # PostgreSQL Flexible Server always has a default 'postgres' database
+}
+
 # Note: NSG outputs removed as network security is now managed by the shared database NSG
 # Both PostgreSQL and CosmosDB use the same NSG for unified database security management

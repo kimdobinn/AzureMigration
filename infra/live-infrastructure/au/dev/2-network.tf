@@ -7,7 +7,7 @@ module "vnet" {
   #Azure address_space = AWS CIDR block
   vnet_address_space = var.vnet_address_space
 
-  resource_group_name = module.resource_group.resource_group_name  # Use dynamic resource group
+  resource_group_name = azurerm_resource_group.this.name           # Use direct resource group
 
   public_subnets = [
     {

@@ -11,20 +11,17 @@ locals {
   resource_group_name = "rg-${local.resource_name_prefix}"  # Creates: rg-au-dev, rg-au-prod, etc.
 }
 
-# Create the resource group for this environment
+# Create the resource group for this environment - direct resource like AWS S3 buckets
 # This automatically creates rg-au-dev, rg-au-prod, rg-us-dev, etc. based on location_code and environment
-module "resource_group" {
-  source = "../../../modules/common/resource-group"
-
-  resource_group_name = local.resource_group_name
-  location           = var.location
-  location_code      = var.location_code
-  environment        = var.environment
+resource "azurerm_resource_group" "this" {
+  name     = local.resource_group_name
+  location = var.location
 
   tags = {
     Project     = "RespireeAzure"
     ManagedBy   = "Terraform"
     Environment = var.environment
     Region      = var.location_code
+    Name        = local.resource_group_name
   }
 }

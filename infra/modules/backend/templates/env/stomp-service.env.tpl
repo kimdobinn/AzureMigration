@@ -1,0 +1,12 @@
+SSL_USED=${ssl_used}
+MQ_HOST=${mq_host}
+MQ_PORT=${mq_port}
+STOMP_PORT=${stomp_port}
+MQ_USERNAME=${mq_username}
+MQ_PASSWORD=${mq_password}
+STOMP_SUBSCRIBE_DESTINATION=${stomp_subscribe_destination}
+GATEWAY_PING_URL=${gateway_ping_url}
+GATEWAY_PING_SOURCE=${gateway_ping_source}
+GATEWAY_PING_API_KEY=${gateway_ping_api_key}
+NODEJS_API_KEY=${nodejs_api_key}
+NODEJS_API_URL=${nodejs_api_url}

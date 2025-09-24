@@ -1,30 +1,27 @@
-# Azure Event-Scheduler - equivalent to AWS event-scheduler EC2
 # Creates Azure VM with Node.js event-scheduler application for medical alert processing
-module "event_scheduler_vm" {
-  source = "../../../modules/common/event-scheduler"
 
-  # Basic VM configuration - equivalent to AWS instance settings
+module "event_scheduler_vm" {
+  source = "../../../modules/event-scheduler"
+
   vm_name             = "${local.resource_name_prefix}-event-scheduler"
-  resource_group_name = module.resource_group.resource_group_name
+  resource_group_name = azurerm_resource_group.this.name
   location            = var.location
-  vm_size             = var.event_scheduler_vm_size # Equivalent to AWS instance_type
-  ssh_public_key      = var.ssh_public_key          # Equivalent to AWS authorization_key
+  vm_size             = var.event_scheduler_vm_size
+  ssh_public_key      = var.ssh_public_key
 
   # Network configuration - equivalent to AWS VPC settings
   vnet_id             = module.vnet.vnet_id
   subnet_id           = module.vnet.private_subnet_ids[0] # Use the correct output
   allowed_cidr_blocks = ["10.13.0.32/28"]                 # App subnet CIDR - equivalent to AWS ingress_rules
 
-  # Event-scheduler service configuration - same as AWS
   event_scheduler = {
     port = var.event_scheduler_port
   }
 
-  # Backend API configuration - equivalent to AWS backend_api
-  # Note: backend_lb module needs to be created separately
+  # Backend API configuration - uses real Application Gateway endpoint
   backend_api = {
-    endpoint = "backend.${var.location_code}-${var.environment}.respiree.com" # Placeholder endpoint
-    port     = 443                                                            # HTTPS port
+    endpoint = module.backend_lb.endpoint  # Real Application Gateway endpoint
+    port     = 443                        # HTTPS port
   }
 
   # Database configuration - equivalent to AWS DocumentDB
@@ -40,9 +37,8 @@ module "event_scheduler_vm" {
   inter_server_auth_key = var.inter_server_auth_key
 
   # Storage account for application artifacts - equivalent to AWS S3 artifact bucket
-  # Note: You'll need to create a storage account for artifacts and upload event-scheduler.zip
-  storage_account_name = var.artifacts_storage_account_name
-  storage_account_key  = var.artifacts_storage_account_key
+  storage_account_name = azurerm_storage_account.artifacts_storage.name
+  storage_account_key  = azurerm_storage_account.artifacts_storage.primary_access_key
 
   # VM storage configuration - equivalent to AWS root_block_device
   os_disk = {

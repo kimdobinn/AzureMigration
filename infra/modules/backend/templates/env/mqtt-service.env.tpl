@@ -1,0 +1,9 @@
+IS_PROD=${is_prod}
+SSL_USED=${ssl_used}
+MQ_HOST=${mq_host}
+MQ_PORT=${mq_port}
+MQ_USERNAME=${mq_username}
+MQ_PASSWORD=${mq_password}
+STOMP_PORT=${stomp_port}
+NODEJS_API_KEY=${nodejs_api_key}
+NODEJS_API_URL=${nodejs_api_url}
