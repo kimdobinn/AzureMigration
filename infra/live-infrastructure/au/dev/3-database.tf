@@ -10,7 +10,6 @@ module "postgresql" {
   sku_name   = var.postgresql_flexible_server_sku_name   # Equivalent to AWS instance_class, but different naming
   storage_mb = var.postgresql_flexible_server_storage_mb # Azure uses MB, AWS uses GB - choose from: [32768 65536 131072 262144 524288 1048576 2097152 4193280 4194304 8388608 16777216 33553408]
 
-  # Network configuration - connects to private database subnets
   # This is equivalent to AWS subnet_ids but Azure only needs one subnet ID
   # Azure automatically handles cross-AZ placement for HA
   delegated_subnet_id  = module.vnet.private_subnet_ids[1] # Connects to db_main subnet (index [1])
@@ -21,12 +20,7 @@ module "postgresql" {
   # Azure: Explicitly enable zone-redundant HA with standby server
   enable_high_availability  = true            # Enable HA (matches your current setup)
   high_availability_mode    = "ZoneRedundant" # Creates standby server in different availability zone
-  # Let Azure automatically choose the standby AZ (removed explicit AZ specification)
 
-  # Network Security Configuration - managed by shared database NSG in CosmosDB module
-  # Both PostgreSQL and CosmosDB use the same NSG for unified security management
-
-  # Tags for resource management (equivalent to AWS tags)
   tags = {
     Environment  = var.environment
     MigratedFrom = "AWS-RDS-Aurora"
@@ -37,7 +31,7 @@ module "cosmosdb" {
   source = "../../../modules/common/cosmosdb"
 
   account_name        = "${local.resource_name_prefix}-cosmos-docdb"
-  resource_group_name = azurerm_resource_group.this.name             # Use direct resource group
+  resource_group_name = azurerm_resource_group.this.name
   location            = var.location
   database_name       = "respiree"
 
